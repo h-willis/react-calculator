@@ -1,49 +1,83 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, } from 'react'
 import CalculatorNumbericButton from './CalculatorNumbericButton'
 import CalculatorScreen from './CalculatorScreen';
 
 function CalculatorContainer() {
   const [screenState, setScreenState] = useState("0");
-  const [result, setResult] = useState("0");
-  const [operatorSelected, setOperatorSelected] = useState(false);
+  // const [result, setResult] = useState("0");
+  const [operator, setOperator] = useState(null);
   const memory = useRef(0);
+  // controls initial screen clear when operator selected
+  const screenClearedOnOperator = useRef(false);
 
   function handleNumberClick({ target }) {
+    console.log('handle number click');
+
+    let clearScreen = false;
+    if (operator !== null && screenClearedOnOperator.current === false) {
+      screenClearedOnOperator.current = true;
+      clearScreen = true;
+    }
+
+    if (screenState === '0') {
+      clearScreen = true;
+    }
+
     setScreenState((prevState) => {
-      if (prevState === '0') {
-        // replace 0 with first typed number
-        prevState = '';
+      let newState = prevState;
+
+      if (clearScreen) {
+        newState = '';
       }
-      if (operatorSelected) {
-        setOperatorSelected(false);
-        prevState = '';
-      }
-      prevState += target.value;
-      return prevState;
+
+      newState += target.value;
+
+      return newState;
     });
   }
 
-  function handleAddition() {
-    // stores current screen state in internal memory and affixes + to end
-    memory.current = Number(screenState);
-    setScreenState((prevState) => {
-      return prevState += '+';
-    });
-    setOperatorSelected(true);
+  function handleOperator({ target }) {
+    console.log(`handle operator: ${target.value}`);
+    memory.current = parseInt(screenState);
+    screenClearedOnOperator.current = false;
+    setScreenState((prevState) =>
+      (prevState += target.value)
+    );
+    setOperator(target.value);
   }
 
   function handleEquals() {
+    if (operator === null) {
+      return;
+    }
+
     setScreenState((prevState) => {
-      prevState = (Number(prevState) + memory.current).toString();
-      return prevState;
+      let newState;
+      switch (operator) {
+        case '+':
+          newState = (parseInt(prevState) + memory.current).toString();
+          break;
+        case '-':
+          newState = (parseInt(prevState) - memory.current).toString();
+          break;
+        case '/':
+          newState = (parseInt(prevState) / memory.current).toString();
+          break;
+        case 'x':
+          newState = (parseInt(prevState) * memory.current).toString();
+          break;
+        default:
+          break;
+      }
+      return newState;
     });
   }
 
-
   function resetScreen() {
     setScreenState("0");
-    setOperatorSelected(false);
+    setOperator(null);
     memory.current = 0;
+    screenClearedOnOperator.current = false;
   }
 
   return (
@@ -60,8 +94,12 @@ function CalculatorContainer() {
       <CalculatorNumbericButton number={9} onClick={handleNumberClick} />
       <CalculatorNumbericButton number={0} onClick={handleNumberClick} />
       <button onClick={resetScreen}>C</button>
-      <button onClick={handleAddition}>+</button>
-      {/* <button onClick={handleSubtract}>-</button>
+      <CalculatorNumbericButton number={'+'} onClick={handleOperator} />
+      <CalculatorNumbericButton number={'-'} onClick={handleOperator} />
+      <CalculatorNumbericButton number={'x'} onClick={handleOperator} />
+      <CalculatorNumbericButton number={'/'} onClick={handleOperator} />
+      {/* <button value={"+"} onClick={handleOperator}>+</button>
+      <button value={'-'} onClick={handleOperator}>-</button>
       <button onClick={handleMult}>x</button>
       <button onClick={handleDivide}>/</button> */}
       <button onClick={handleEquals}>=</button>
