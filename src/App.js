@@ -1,8 +1,9 @@
 import React from 'react'
+import CalculatorContainer from './CalculatorContainer'
 
 function App() {
   return (
-    <div>Hello world</div>
+    <CalculatorContainer />
   );
 }
 
