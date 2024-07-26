@@ -36,6 +36,7 @@ function CalculatorContainer() {
     });
   }
 
+  // TODO handle sequential operator inputs
   function handleOperator({ target }) {
     console.log(`handle operator: ${target.value}`);
     memory.current = parseInt(screenState);
