@@ -1,5 +1,5 @@
 import React, { useState, useRef, } from 'react'
-import CalculatorNumbericButton from './CalculatorNumbericButton'
+import CalculatorButton from './CalculatorButton'
 import CalculatorScreen from './CalculatorScreen';
 
 function CalculatorContainer() {
@@ -83,22 +83,22 @@ function CalculatorContainer() {
   return (
     <div className="calculatorContainer">
       <CalculatorScreen screenState={screenState} gridPosition={[1, 1]} />
-      <CalculatorNumbericButton number={1} onClick={handleNumberClick} gridPosition={[4, 1]} />
-      <CalculatorNumbericButton number={2} onClick={handleNumberClick} gridPosition={[4, 2]} />
-      <CalculatorNumbericButton number={3} onClick={handleNumberClick} gridPosition={[4, 3]} />
-      <CalculatorNumbericButton number={4} onClick={handleNumberClick} gridPosition={[3, 1]} />
-      <CalculatorNumbericButton number={5} onClick={handleNumberClick} gridPosition={[3, 2]} />
-      <CalculatorNumbericButton number={6} onClick={handleNumberClick} gridPosition={[3, 3]} />
-      <CalculatorNumbericButton number={7} onClick={handleNumberClick} gridPosition={[2, 1]} />
-      <CalculatorNumbericButton number={8} onClick={handleNumberClick} gridPosition={[2, 2]} />
-      <CalculatorNumbericButton number={9} onClick={handleNumberClick} gridPosition={[2, 3]} />
-      <CalculatorNumbericButton number={0} onClick={handleNumberClick} gridPosition={[5, 1]} />
-      <CalculatorNumbericButton number={'C'} onClick={resetScreen} gridPosition={[6, 3]} />
-      <CalculatorNumbericButton number={'+'} onClick={handleOperator} gridPosition={[5, 4]} />
-      <CalculatorNumbericButton number={'-'} onClick={handleOperator} gridPosition={[4, 4]} />
-      <CalculatorNumbericButton number={'x'} onClick={handleOperator} gridPosition={[3, 4]} />
-      <CalculatorNumbericButton number={'/'} onClick={handleOperator} gridPosition={[2, 4]} />
-      <CalculatorNumbericButton number={'='} onClick={handleEquals} gridPosition={[5, 3]} />
+      <CalculatorButton symbol={1} onClick={handleNumberClick} gridPosition={[4, 1]} />
+      <CalculatorButton symbol={2} onClick={handleNumberClick} gridPosition={[4, 2]} />
+      <CalculatorButton symbol={3} onClick={handleNumberClick} gridPosition={[4, 3]} />
+      <CalculatorButton symbol={4} onClick={handleNumberClick} gridPosition={[3, 1]} />
+      <CalculatorButton symbol={5} onClick={handleNumberClick} gridPosition={[3, 2]} />
+      <CalculatorButton symbol={6} onClick={handleNumberClick} gridPosition={[3, 3]} />
+      <CalculatorButton symbol={7} onClick={handleNumberClick} gridPosition={[2, 1]} />
+      <CalculatorButton symbol={8} onClick={handleNumberClick} gridPosition={[2, 2]} />
+      <CalculatorButton symbol={9} onClick={handleNumberClick} gridPosition={[2, 3]} />
+      <CalculatorButton symbol={0} onClick={handleNumberClick} gridPosition={[5, 1]} />
+      <CalculatorButton symbol={'C'} onClick={resetScreen} gridPosition={[6, 3]} />
+      <CalculatorButton symbol={'+'} onClick={handleOperator} gridPosition={[5, 4]} />
+      <CalculatorButton symbol={'-'} onClick={handleOperator} gridPosition={[4, 4]} />
+      <CalculatorButton symbol={'x'} onClick={handleOperator} gridPosition={[3, 4]} />
+      <CalculatorButton symbol={'/'} onClick={handleOperator} gridPosition={[2, 4]} />
+      <CalculatorButton symbol={'='} onClick={handleEquals} gridPosition={[5, 3]} />
     </div>
   )
 }

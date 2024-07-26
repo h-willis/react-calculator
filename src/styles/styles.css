@@ -1,8 +1,9 @@
-/* * {
-  margin: 0;
+* {
+  /* margin: 0;
   border: 0;
-  padding: 0;
-} */
+  padding: 0; */
+  border-color: blue;
+}
 
 .calculatorContainer {
   width: 500px;
@@ -11,9 +12,11 @@
   gap: 5px;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(6, 1fr);
+  border: 10px;
+  border-color: black;
 }
 
-.calculatorNumbericButton {
+.calculatorButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,7 +26,7 @@
   width: 100%; */
 }
 
-.calculatorNumbericButton button {
+.calculatorButton button {
   height: 100%;
   width: 100%;
 }
