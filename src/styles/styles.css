@@ -8,18 +8,31 @@
   width: 500px;
   height: 500px;
   display: grid;
+  gap: 5px;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(6, 1fr);
 }
 
 .calculatorNumbericButton {
-  font-size: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* font-size: 25px;
   padding: 50px;
+  height: 100%;
+  width: 100%; */
+}
+
+.calculatorNumbericButton button {
   height: 100%;
   width: 100%;
 }
 
 .calculatorScreen {
   display: flex;
+  font-size: 50px;
   justify-content: right;
+  align-items: center;
+  background-color: rgba(0, 0, 255, 0.301);
+  border-radius: 2%;
 }
