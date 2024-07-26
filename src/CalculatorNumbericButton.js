@@ -1,8 +1,13 @@
 import React from 'react'
 
-function CalculatorNumbericButton({ number, onClick }) {
+function CalculatorNumbericButton({ number, onClick, gridPosition }) {
+  const gridPositions = {
+    gridRow: `${gridPosition[0]}`,
+    gridColumn: `${gridPosition[1]}`
+  }
+
   return (
-    <div className="calculatorNumbericButton">
+    <div className="calculatorNumbericButton" style={gridPositions}>
       <button value={number} onClick={onClick}>{number}</button>
     </div>
   )

@@ -1,0 +1,25 @@
+/* * {
+  margin: 0;
+  border: 0;
+  padding: 0;
+} */
+
+.calculatorContainer {
+  width: 500px;
+  height: 500px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+}
+
+.calculatorNumbericButton {
+  font-size: 25px;
+  padding: 50px;
+  height: 100%;
+  width: 100%;
+}
+
+.calculatorScreen {
+  display: flex;
+  justify-content: right;
+}
