@@ -53,24 +53,26 @@ function CalculatorContainer() {
     }
 
     setScreenState((prevState) => {
-      let newState;
+      let result;
       switch (operator) {
         case '+':
-          newState = (parseInt(prevState) + memory.current).toString();
+          result = memory.current + parseFloat(prevState);
           break;
         case '-':
-          newState = (parseInt(prevState) - memory.current).toString();
+          result = memory.current - parseFloat(prevState);
           break;
         case '/':
-          newState = (parseInt(prevState) / memory.current).toString();
+          result = memory.current / parseFloat(prevState);
           break;
         case 'x':
-          newState = (parseInt(prevState) * memory.current).toString();
+          result = memory.current * parseFloat(prevState);
           break;
         default:
+          alert('unknown operator');
           break;
       }
-      return newState;
+
+      return result.toString();
     });
   }
 
@@ -94,6 +96,7 @@ function CalculatorContainer() {
       <CalculatorButton symbol={8} onClick={handleNumberClick} gridPosition={[2, 2]} />
       <CalculatorButton symbol={9} onClick={handleNumberClick} gridPosition={[2, 3]} />
       <CalculatorButton symbol={0} onClick={handleNumberClick} gridPosition={[5, 1]} />
+      <CalculatorButton symbol={'.'} onClick={handleNumberClick} gridPosition={[5, 2]} />
       <CalculatorButton symbol={'C'} onClick={resetScreen} gridPosition={[6, 3]} />
       <CalculatorButton symbol={'+'} onClick={handleOperator} gridPosition={[5, 4]} />
       <CalculatorButton symbol={'-'} onClick={handleOperator} gridPosition={[4, 4]} />
