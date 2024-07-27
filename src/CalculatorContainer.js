@@ -11,6 +11,7 @@ function CalculatorContainer() {
   const screenClearedOnOperator = useRef(false);
 
   function handleNumberClick({ target }) {
+    // TODO fix decimal place use
     console.log('handle number click');
 
     let clearScreen = false;
@@ -23,6 +24,7 @@ function CalculatorContainer() {
       clearScreen = true;
     }
 
+    // TODO handle screensize
     setScreenState((prevState) => {
       let newState = prevState;
 
