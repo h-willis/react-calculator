@@ -1,4 +1,4 @@
-import React, { useState, useRef, } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import CalculatorButton from './CalculatorButton'
 import CalculatorScreen from './CalculatorScreen';
 
@@ -9,6 +9,23 @@ function CalculatorContainer() {
   const memory = useRef(0);
   // controls initial screen clear when operator selected
   const screenClearedOnOperator = useRef(false);
+
+  useEffect(() => {
+    function handleKeyPress({ key }) {
+      console.log(`handle press ${key}`);
+      if (key === 'Escape') {
+        resetScreen();
+      }
+    }
+
+    // bind escape key to clear calculator
+    document.addEventListener('keydown', handleKeyPress);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
 
   function handleNumberClick({ target }) {
     // TODO fix decimal place use
@@ -40,8 +57,11 @@ function CalculatorContainer() {
 
   // TODO handle sequential operator inputs
   function handleOperator({ target }) {
+    if (operator !== null) {
+      setOperator(null);
+    }
     console.log(`handle operator: ${target.value}`);
-    memory.current = parseInt(screenState);
+    memory.current = parseFloat(screenState);
     screenClearedOnOperator.current = false;
     setScreenState((prevState) =>
       (prevState += target.value)
