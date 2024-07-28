@@ -6,7 +6,7 @@ function CalculatorContainer() {
   // 
   const [screenState, setScreenState] = useState('0');
   const [operator, setOperator] = useState(null);
-  const memory = useRef(0);
+  const memory = useRef(null);
   // controls initial screen clear when operator selected
   const operatorScreenClear = useRef(false);
 
@@ -30,20 +30,11 @@ function CalculatorContainer() {
 
 
   function handleNumberClick({ target }) {
-    console.log(`handle number ${target.value}`);
-
-    let clearScreen = operatorScreenClear.current;
-    operatorScreenClear.current = false;
-
-    if (screenState === '0') {
-      clearScreen = true;
-    }
-
     // TODO handle screensize
     setScreenState((prevState) => {
       let newState = prevState;
 
-      if (clearScreen) {
+      if (screenHasOperator || newState === '0') {
         newState = '';
       }
 
@@ -54,9 +45,6 @@ function CalculatorContainer() {
   }
 
   function handleDecimal() {
-    let clearScreen = operatorScreenClear.current;
-    operatorScreenClear.current = false;
-
     setScreenState((prevState) => {
       let newState = prevState;
 
@@ -66,7 +54,7 @@ function CalculatorContainer() {
         return;
       }
 
-      if (clearScreen) {
+      if (screenHasOperator) {
         // clear after operator state
         newState = '0';
       }
@@ -77,27 +65,27 @@ function CalculatorContainer() {
 
   function handleOperator({ target }) {
     // TODO handle sequential calculations with operators with no equals in between
-    operatorScreenClear.current = true;
-
     if (operator === target.value) {
       return;
     }
 
-    if (operator !== null) {
+    // if we've got an operator and it's different to the one we already got
+    if (operator !== null && !screenState.includes(target.value)) {
       // replace operator at end with new operator
       let rmvOpStr = screenState.slice(0, -1);
       rmvOpStr += target.value;
       setScreenState(rmvOpStr);
       setOperator(target.value);
-      handleEquals();
       return;
     }
 
-    memory.current = parseFloat(screenState);
+    setOperator(target.value);
+    if (memory.current !== null) {
+      memory.current = calculate();
+    }
     setScreenState((prevState) =>
       (prevState += target.value)
     );
-    setOperator(target.value);
   }
 
   function handleEquals() {
@@ -106,35 +94,56 @@ function CalculatorContainer() {
     }
 
     setScreenState((prevState) => {
-      let result;
-      switch (operator) {
-        case '+':
-          result = memory.current + parseFloat(prevState);
-          break;
-        case '-':
-          result = memory.current - parseFloat(prevState);
-          break;
-        case '/':
-          result = memory.current / parseFloat(prevState);
-          break;
-        case 'x':
-          result = memory.current * parseFloat(prevState);
-          break;
-        default:
-          alert('unknown operator');
-          break;
-      }
-      setOperator(null);
-
-      return result.toString();
+      return calculate().toString();
     });
   }
 
-  function resetScreen() {
+  const resetScreen = () => {
     setScreenState('0');
     setOperator(null);
-    memory.current = 0;
+    memory.current = null;
     operatorScreenClear.current = false;
+  }
+
+  function calculate() {
+    if (memory.current === null) {
+      // or set screen to something idk
+      // return parseFloat(screenState);
+      return;
+    }
+
+    let result;
+    switch (operator) {
+      case '+':
+        result = memory.current + parseFloat(screenState);
+        break;
+      case '-':
+        result = memory.current - parseFloat(screenState);
+        break;
+      case '/':
+        result = memory.current / parseFloat(screenState);
+        break;
+      case 'x':
+        result = memory.current * parseFloat(screenState);
+        break;
+      case null:
+        alert('null operator');
+        break;
+      default:
+        alert('unknown operator');
+        break;
+    }
+
+    setOperator(null);
+    return result;
+  }
+
+  const screenHasOperator = () => {
+    if (screenState.includes('+')) return true;
+    if (screenState.includes('-')) return true;
+    if (screenState.includes('/')) return true;
+    if (screenState.includes('x')) return true;
+    return false;
   }
 
   return (
