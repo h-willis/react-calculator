@@ -76,6 +76,7 @@ function CalculatorContainer() {
   }
 
   function handleOperator({ target }) {
+    // TODO handle sequential calculations with operators with no equals in between
     operatorScreenClear.current = true;
 
     if (operator === target.value) {
