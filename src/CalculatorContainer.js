@@ -30,7 +30,6 @@ function CalculatorContainer() {
 
 
   function handleNumberClick({ target }) {
-    // TODO fix decimal place use
     console.log(`handle number ${target.value}`);
 
     let clearScreen = false;
@@ -61,8 +60,8 @@ function CalculatorContainer() {
     let clearScreen = false;
 
     if (!screenClearedOnOperator.current) {
-      clearScreen = true;
       screenClearedOnOperator.current = true;
+      clearScreen = true;
     }
 
     setScreenState((prevState) => {
@@ -83,12 +82,20 @@ function CalculatorContainer() {
     });
   }
 
-  // TODO handle sequential operator inputs
   function handleOperator({ target }) {
-    if (operator !== null) {
-      setOperator(null);
+    if (operator === target.value) {
+      return;
     }
-    console.log(`handle operator: ${target.value}`);
+
+    if (operator !== null) {
+      // replace operator at end with new operator
+      let rmvOpStr = screenState.slice(0, -1);
+      rmvOpStr += target.value;
+      setScreenState(rmvOpStr);
+      setOperator(target.value);
+      return;
+    }
+
     memory.current = parseFloat(screenState);
     screenClearedOnOperator.current = false;
     setScreenState((prevState) =>
@@ -121,6 +128,7 @@ function CalculatorContainer() {
           alert('unknown operator');
           break;
       }
+      setOperator(null);
 
       return result.toString();
     });
