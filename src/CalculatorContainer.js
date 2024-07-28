@@ -3,13 +3,14 @@ import CalculatorButton from './CalculatorButton'
 import CalculatorScreen from './CalculatorScreen';
 
 function CalculatorContainer() {
-  const [screenState, setScreenState] = useState("0");
-  // const [result, setResult] = useState("0");
+  // 
+  const [screenState, setScreenState] = useState('0');
   const [operator, setOperator] = useState(null);
   const memory = useRef(0);
   // controls initial screen clear when operator selected
   const screenClearedOnOperator = useRef(false);
 
+  // bind escape key to clear calculator screen
   useEffect(() => {
     function handleKeyPress({ key }) {
       console.log(`handle press ${key}`);
@@ -27,12 +28,13 @@ function CalculatorContainer() {
     };
   }, []);
 
+
   function handleNumberClick({ target }) {
     // TODO fix decimal place use
-    console.log('handle number click');
+    console.log(`handle number ${target.value}`);
 
     let clearScreen = false;
-    if (operator !== null && screenClearedOnOperator.current === false) {
+    if (screenClearedOnOperator.current === false) {
       screenClearedOnOperator.current = true;
       clearScreen = true;
     }
@@ -52,6 +54,32 @@ function CalculatorContainer() {
       newState += target.value;
 
       return newState;
+    });
+  }
+
+  function handleDecimal() {
+    let clearScreen = false;
+
+    if (!screenClearedOnOperator.current) {
+      clearScreen = true;
+      screenClearedOnOperator.current = true;
+    }
+
+    setScreenState((prevState) => {
+      let newState = prevState;
+
+      console.log(`handle decimal ${newState}`);
+
+      if (newState.includes('.')) {
+        return;
+      }
+
+      if (clearScreen) {
+        // clear after operator state
+        newState = '0';
+      }
+
+      return newState + '.';
     });
   }
 
@@ -99,7 +127,7 @@ function CalculatorContainer() {
   }
 
   function resetScreen() {
-    setScreenState("0");
+    setScreenState('0');
     setOperator(null);
     memory.current = 0;
     screenClearedOnOperator.current = false;
@@ -118,7 +146,7 @@ function CalculatorContainer() {
       <CalculatorButton symbol={8} onClick={handleNumberClick} gridPosition={[2, 2]} />
       <CalculatorButton symbol={9} onClick={handleNumberClick} gridPosition={[2, 3]} />
       <CalculatorButton symbol={0} onClick={handleNumberClick} gridPosition={[5, 1]} />
-      <CalculatorButton symbol={'.'} onClick={handleNumberClick} gridPosition={[5, 2]} />
+      <CalculatorButton symbol={'.'} onClick={handleDecimal} gridPosition={[5, 2]} />
       <CalculatorButton symbol={'C'} onClick={resetScreen} gridPosition={[6, 3]} />
       <CalculatorButton symbol={'+'} onClick={handleOperator} gridPosition={[5, 4]} />
       <CalculatorButton symbol={'-'} onClick={handleOperator} gridPosition={[4, 4]} />
