@@ -8,7 +8,7 @@ function CalculatorContainer() {
   const [operator, setOperator] = useState(null);
   const memory = useRef(0);
   // controls initial screen clear when operator selected
-  const screenClearedOnOperator = useRef(false);
+  const operatorScreenClear = useRef(false);
 
   // bind escape key to clear calculator screen
   useEffect(() => {
@@ -32,11 +32,8 @@ function CalculatorContainer() {
   function handleNumberClick({ target }) {
     console.log(`handle number ${target.value}`);
 
-    let clearScreen = false;
-    if (screenClearedOnOperator.current === false) {
-      screenClearedOnOperator.current = true;
-      clearScreen = true;
-    }
+    let clearScreen = operatorScreenClear.current;
+    operatorScreenClear.current = false;
 
     if (screenState === '0') {
       clearScreen = true;
@@ -57,12 +54,8 @@ function CalculatorContainer() {
   }
 
   function handleDecimal() {
-    let clearScreen = false;
-
-    if (!screenClearedOnOperator.current) {
-      screenClearedOnOperator.current = true;
-      clearScreen = true;
-    }
+    let clearScreen = operatorScreenClear.current;
+    operatorScreenClear.current = false;
 
     setScreenState((prevState) => {
       let newState = prevState;
@@ -83,6 +76,8 @@ function CalculatorContainer() {
   }
 
   function handleOperator({ target }) {
+    operatorScreenClear.current = true;
+
     if (operator === target.value) {
       return;
     }
@@ -93,11 +88,11 @@ function CalculatorContainer() {
       rmvOpStr += target.value;
       setScreenState(rmvOpStr);
       setOperator(target.value);
+      handleEquals();
       return;
     }
 
     memory.current = parseFloat(screenState);
-    screenClearedOnOperator.current = false;
     setScreenState((prevState) =>
       (prevState += target.value)
     );
@@ -138,7 +133,7 @@ function CalculatorContainer() {
     setScreenState('0');
     setOperator(null);
     memory.current = 0;
-    screenClearedOnOperator.current = false;
+    operatorScreenClear.current = false;
   }
 
   return (
