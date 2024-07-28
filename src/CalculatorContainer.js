@@ -34,7 +34,7 @@ function CalculatorContainer() {
     setScreenState((prevState) => {
       let newState = prevState;
 
-      if (screenHasOperator || newState === '0') {
+      if (hasOperator(newState) || newState === '0') {
         newState = '';
       }
 
@@ -48,13 +48,11 @@ function CalculatorContainer() {
     setScreenState((prevState) => {
       let newState = prevState;
 
-      console.log(`handle decimal ${newState}`);
-
       if (newState.includes('.')) {
         return;
       }
 
-      if (screenHasOperator) {
+      if (hasOperator(newState)) {
         // clear after operator state
         newState = '0';
       }
@@ -70,7 +68,7 @@ function CalculatorContainer() {
     }
 
     // if we've got an operator and it's different to the one we already got
-    if (operator !== null && !screenState.includes(target.value)) {
+    if (screenHasOperator() && !screenState.includes(target.value)) {
       // replace operator at end with new operator
       let rmvOpStr = screenState.slice(0, -1);
       rmvOpStr += target.value;
@@ -80,9 +78,15 @@ function CalculatorContainer() {
     }
 
     setOperator(target.value);
+
     if (memory.current !== null) {
       memory.current = calculate();
+      setScreenState(memory.current += target.value);
+      return;
     }
+
+
+    memory.current = screenState;
     setScreenState((prevState) =>
       (prevState += target.value)
     );
@@ -93,9 +97,8 @@ function CalculatorContainer() {
       return;
     }
 
-    setScreenState((prevState) => {
-      return calculate().toString();
-    });
+    let newState = calculate().toString();
+    setScreenState(newState);
   }
 
   const resetScreen = () => {
@@ -107,9 +110,7 @@ function CalculatorContainer() {
 
   function calculate() {
     if (memory.current === null) {
-      // or set screen to something idk
-      // return parseFloat(screenState);
-      return;
+      return screenState;
     }
 
     let result;
@@ -143,6 +144,14 @@ function CalculatorContainer() {
     if (screenState.includes('-')) return true;
     if (screenState.includes('/')) return true;
     if (screenState.includes('x')) return true;
+    return false;
+  }
+
+  function hasOperator(str) {
+    if (str.includes('+')) return true;
+    if (str.includes('-')) return true;
+    if (str.includes('/')) return true;
+    if (str.includes('x')) return true;
     return false;
   }
 
